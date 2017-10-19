@@ -39,11 +39,11 @@ static const string SCORE_NAME[] = {
     "[11] Two Pairs \t\t",	//10
     "[12] 3 of a kind \t",	//11
     "[13] 4 of a kind \t",	//12
-    "[14] Small Straight \t",//13
-    "[15] Large straight \t",//14
+    "[14] Small Straight \t",	//13
+    "[15] Large straight \t",	//14
     "[16] Full House \t",	//15
     "[17] Chance \t\t",		//16
-    "[18] YATZY \t\t",	//17
+    "[18] YATZY \t\t",		//17
     "[19] Grand Total \t",	//18
 };
 

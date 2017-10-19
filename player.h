@@ -9,30 +9,29 @@ class Player
 {
 public:
 
+    string name = "Player";
     int turnsLeft = 0;
+    int scores[19] = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,};
+    vector<int> diceOnTable;
+    vector<int> diceOnHand;
 
-    void rollDice();
-    void printPlayerHand();
     void selectPlayerName();
-    bool checkForPair();
-    int checkSameFaces(int faceValue);
-    void printScoreBoard();
-    void printScoreBoardInfo();
-    void printRolledDice();
+
     void playerTurn();
+    void rollDice();
     void saveToScore();
     void keepDice();
     void discardDice();
+
+    void printPlayerHand();
+    void printRolledDice();
+    void printScoreBoard();
+    void printScoreBoardInfo();
+
     void sortHand();
     void calculateScores();
-
-    int scores[19] = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,};
-
-    vector<int> diceOnTable;
-    string name = "Player";
-    vector<int> diceOnHand;
-
-
+    bool checkForPair();
+    int checkSameFaces(int faceValue);
 };
 
 #endif // PLAYER_H
