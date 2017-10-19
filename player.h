@@ -9,14 +9,6 @@ class Player
 {
 public:
 
-    struct Scores {
-	int value = 0;
-	bool taken = false;
-    };
-
-
-    int numberOfDice = 5;
-    int numberOfDiceOnHand = 0;
     int turnsLeft = 0;
 
     void rollDice();
@@ -34,12 +26,8 @@ public:
     void sortHand();
     void calculateScores();
 
+    int scores[19] = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,};
 
-
-    int scores[19] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-
-
-    //Die die[5];
     vector<int> diceOnTable;
     string name = "Player";
     vector<int> diceOnHand;
