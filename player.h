@@ -10,10 +10,10 @@ class Player
 public:
 
     string name = "Player";
-    int turnsLeft = 0;
-    int scores[19] = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,};
-    vector<int> diceOnTable;
-    vector<int> diceOnHand;
+	int turnsLeft = 3;
+	int score[20] = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,};
+	vector<int> diceOnTable;
+	vector<int> diceOnHand;
 
     void selectPlayerName();
 
