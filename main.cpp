@@ -23,10 +23,7 @@ int main() {
 	cout << "\n\n\n\n";
 
 	Player* player1 = new Player;
-
-//	Player player1;
 	//player1.selectPlayerName();
-//	player1->diceOnTable.resize(5);
 	while(true) {
 		player1->playerTurn();
 	}

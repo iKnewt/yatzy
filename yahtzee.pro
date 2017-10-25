@@ -5,8 +5,11 @@ CONFIG -= qt
 
 SOURCES += main.cpp \
     Tool.cpp \
-    Player.cpp
+    Player.cpp \
+    Print.cpp
 
 HEADERS += \
     Tool.h \
-    Player.h
+    Player.h \
+    Print.h \
+    Score.h
