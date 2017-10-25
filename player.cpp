@@ -73,12 +73,14 @@ static const string SCORE_INFO[] = {
 void Player::playerTurn(){
 
     calculateScores();
+    printDiceOnTable();
     printPlayerHand();
 
     cout << "[1] Roll\n"
             "[2] Save hand to Score\n"
             "[3] Print Scoreboard\n"
-            "[4] Print explanation for scoreboard\n";
+            "[4] Print explanation for scoreboard\n"
+            "[5] Change hand\n";
     int playerChoice;
     while(!Tool::tryReadInt(&playerChoice) || playerChoice > 5 || playerChoice < 1)
 	cout << "That's not a valid input";
@@ -96,8 +98,41 @@ void Player::playerTurn(){
 	case 4:
 	    printScoreBoardInfo();
 	    break;
+	case 5:
+	    changeHand();
 	default:
 	    break;
+    }
+}
+
+void Player::changeHand() {
+    bool cont = true;
+    while(cont) {
+	printDiceOnTable();
+	printPlayerHand();
+	cout << "What would you like to do?\n"
+	        "[2] Keep one dice\n"
+	        "[3] Discard one of your dice\n"
+	        "[4] Continue game\n";
+	int playerChoice;
+	while(!Tool::tryReadInt(&playerChoice))
+	    cout << "Invalid input\n";
+
+	switch (playerChoice) {
+	    case 1:
+		break;
+	    case 2:
+		keepDice();
+		break;
+	    case 3:
+		discardDice();
+		break;
+	    case 4:
+		cont = false;
+		break;
+	    default:
+		break;
+	}
     }
 }
 
@@ -110,63 +145,68 @@ void Player::saveToScore() {
     while(!Tool::tryReadInt(&userInput))
 	cout << "Ivnalid move\n";
 
-    switch (userInput-1) {
-	case Ones:
-	    scores[Ones] = checkSameFaces(1);
-	    break;
-	case Twos:
-	    scores[Twos] = checkSameFaces(2);
-	    break;
-	case Threes:
-	    scores[Threes] = checkSameFaces(3);
-	    break;
-	case Fours:
-	    scores[Fours] = checkSameFaces(4);
-	    break;
-	case Fives:
-	    scores[Fives] = checkSameFaces(5);
-	    break;
-	case Sixes:
-	    scores[Sixes] = checkSameFaces(6);
-	    break;
-	case OnePair:
+    if(scores[userInput-1] == 0)
+	cout << "You've already filled that score.\n";
+    else
+	switch(userInput-1) {
+	    case Ones:
+		scores[Ones] = checkSameFaces(1);
+		break;
+	    case Twos:
+		scores[Twos] = checkSameFaces(2);
+		break;
+	    case Threes:
+		scores[Threes] = checkSameFaces(3);
+		break;
+	    case Fours:
+		scores[Fours] = checkSameFaces(4);
+		break;
+	    case Fives:
+		scores[Fives] = checkSameFaces(5);
+		break;
+	    case Sixes:
+		scores[Sixes] = checkSameFaces(6);
+		break;
+	    case OnePair:
 
-	    break;
-	case TwoPairs:
+		break;
+	    case TwoPairs:
 
-	    break;
-	case ThreeOfAKind:
+		break;
+	    case ThreeOfAKind:
 
-	    break;
-	case FourOfAKind:
+		break;
+	    case FourOfAKind:
 
-	    break;
-	case SmallStraight:
+		break;
+	    case SmallStraight:
 
-	    break;
-	case LargeStraight:
+		break;
+	    case LargeStraight:
 
-	    break;
-	case FullHouse:
+		break;
+	    case FullHouse:
 
-	    break;
-	case Chance:
+		break;
+	    case Chance:
 
-	    break;
-	case Yatzy:
+		break;
+	    case Yatzy:
 
-	    break;
-	case TotalScore:
-	case Bonus:
-	case Total:
-	case GrandTotal:
-	    cout << "You can't change this value\n";
-	    break;
-	default:
-	    break;
+		break;
+	    case TotalScore:
+	    case Bonus:
+	    case Total:
+	    case GrandTotal:
+		cout << "You can't change this value\n";
+		break;
+	    default:
+		break;
+	}
+    if (userInput != 0) {
+	diceOnHand.clear();
+	diceOnTable.resize(5);
     }
-    diceOnHand.clear();
-    diceOnTable.resize(5);
 }
 
 void Player::calculateScores() {
@@ -187,11 +227,10 @@ void Player::calculateScores() {
 	if(scores[i] >= 0)
 	    scores[GrandTotal] += scores[i];
     scores[GrandTotal] += scores[Total];
-
 }
 
 void Player::sortHand() {
-    sort(diceOnHand.begin(), diceOnHand.end());
+    sort(diceOnHand.begin(), diceOnHand.end()); // sorts the dice on hand after value to easily compare the dice
 }
 
 void Player::printScoreBoardInfo() {
@@ -204,7 +243,6 @@ void Player::printScoreBoardInfo() {
     }
     cout << endl;
 }
-
 
 void Player::printScoreBoard() {
     cout << endl << endl << name << "'s Score Board\n\n"
@@ -221,12 +259,7 @@ void Player::printScoreBoard() {
     cout << endl;
 }
 
-//void Player::printRolledDice() {
-//	for(int i = 0; i < numberOfDice; i++)
-//		cout << "Die[" << i + 1 << "] = " << diceOnTable[i] << endl;
-//	cout << endl;
-//}
-void Player::printRolledDice() {
+void Player::printDiceOnTable() {
     cout << "Dice number \t | 1 | 2 | 3 | 4 | 5 |\n"
             "            \t ---------------------\n"
             "Dice on table \t";
@@ -270,38 +303,6 @@ void Player::rollDice() {
     cout << "Rolling dice..\n\n";
     for(int i = 0; i < tableSize; i++)
 	diceOnTable.push_back(rand() % 6 + 1);
-
-
-    bool cont = true;
-    while(cont) {
-	printRolledDice();
-	printPlayerHand();
-	cout << "What would you like to do?\n"
-	        "[1] Roll again\n"
-	        "[2] Keep one dice\n"
-	        "[3] Discard one of your dice\n"
-	        "[4] Continue game\n";
-	int playerChoice;
-	while(!Tool::tryReadInt(&playerChoice))
-	    cout << "Invalid input\n";
-
-	switch (playerChoice) {
-	    case 1:
-		rollDice();
-		break;
-	    case 2:
-		keepDice();
-		break;
-	    case 3:
-		discardDice();
-		break;
-	    case 4:
-		cont = false;
-		break;
-	    default:
-		break;
-	}
-    }
 }
 
 void Player::printPlayerHand() {

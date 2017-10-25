@@ -20,11 +20,12 @@ public:
     void playerTurn();
     void rollDice();
     void saveToScore();
+	void changeHand();
     void keepDice();
     void discardDice();
 
     void printPlayerHand();
-    void printRolledDice();
+    void printDiceOnTable();
     void printScoreBoard();
     void printScoreBoardInfo();
 
