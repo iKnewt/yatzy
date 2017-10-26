@@ -2,7 +2,6 @@
 #include "Score.h"
 #include "Print.h"
 
-
 void Player::playerTurn(){
 
 
@@ -54,7 +53,7 @@ void Player::saveToScore() {
     while(!Tool::tryReadInt(&userInput))
 	cout << "Ivnalid move\n";
 
-    if(score[userInput-1] != -1)
+    if(score[userInput - 1] != -1)
 	cout << "You've already filled that score.\n\n";
     else {
 	switch(userInput - 1) {
@@ -69,31 +68,31 @@ void Player::saveToScore() {
 		break;
 
 	    case OnePair:
-
+		score[userInput - 1] = checkForPair();
 		break;
 	    case TwoPairs:
-
+		score[userInput - 1] = checkForTwoPair();
 		break;
 	    case ThreeOfAKind:
-
+		score[userInput - 1] = checkForThreeOfAKind();
 		break;
 	    case FourOfAKind:
-
+		score[userInput - 1] = checkForFourOfAKind();
 		break;
 	    case SmallStraight:
-
+		score[userInput - 1] = checkForSmallStraight();
 		break;
 	    case LargeStraight:
-
+		score[userInput - 1] = checkForLargeStraight();
 		break;
 	    case FullHouse:
-
+		score[userInput - 1] = checkForFullHouse();
 		break;
 	    case Chance:
-
+		score[userInput - 1] = checkForChance();
 		break;
 	    case Yatzy:
-
+		score[userInput - 1] = checkForYatzy();
 		break;
 	    case TotalScore:
 	    case Bonus:
@@ -173,12 +172,99 @@ void Player::selectPlayerName() {
     cout << endl;
 }
 
-bool Player::checkForPair() {
+int Player::checkForYatzy() {
+    int handSize = diceForScore.size();
+    int four = checkForFourOfAKind();
+    if(handSize == 1)
+	if(four > 0 && diceForScore[0] == four / 4)
+	    return 50;
+    return 0;
+}
+
+int Player::checkForChance() {
+    int handSize = diceForScore.size();
+    int result = 0;
+    for(int i = 0; i < handSize; i++)
+	result += diceForScore[i];
+    return result;
+}
+
+int Player::checkForThreeOfAKind() {
     int handSize = diceForScore.size();
     for(int i = 0; i < handSize; i++)
-	if(diceOnHand[i] == diceOnHand[i+1])
-	    return true;
-    return false;
+	if(diceForScore[i] == diceForScore[i + 1] && diceForScore[i + 1] == diceForScore[i + 2]) {
+	    int result = diceForScore[i] + diceForScore[i + 1] + diceForScore[i + 2];
+	    diceForScore.erase(diceForScore.begin() + i, diceForScore.begin() + (i + 2));
+	    return result;
+	}
+    return 0;
+}
+
+int Player::checkForFourOfAKind() {
+    int three = checkForThreeOfAKind();
+    int handSize = diceForScore.size();
+    for(int i = 0; i < handSize; i++)
+	if(diceForScore[i] == three / 3) {
+	    int result = diceForScore[i] + three;
+	    diceForScore.erase(diceForScore.begin() + i);
+	    return result;
+	}
+    return 0;
+}
+
+int Player::checkForSmallStraight() {
+    bool straight = false;
+    int handSize = diceForScore.size();
+    if(handSize == 5)
+	for(int i = 0; i < 5; i++)
+	    if(diceForScore[i] == i + 1)
+		straight = true;
+	    else
+		straight = false;
+    if(straight)
+	return 15;
+    return 0;
+}
+
+int Player::checkForLargeStraight() {
+    bool straight = false;
+    int handSize = diceForScore.size();
+    if(handSize == 5)
+	for(int i = 0; i < 5; i++)
+	    if(diceForScore[i] == i + 2)
+		straight = true;
+	    else
+		straight = false;
+    if(straight)
+	return 20;
+    return 0;
+}
+
+int Player::checkForFullHouse() {
+    int three = checkForThreeOfAKind();
+    int two = checkForPair();
+    if(three != 0 && two != 0)
+	return three + two;
+    return 0;
+}
+
+int Player::checkForTwoPair() {
+    int firstPair = checkForPair();
+    int secondPair = checkForPair();
+    if(firstPair != 0 && secondPair != 0)
+	return firstPair + secondPair;
+    return 0;
+}
+
+int Player::checkForPair() {
+    int handSize = diceForScore.size();
+    for(int i = 0; i < handSize; i++)
+	if(diceForScore[i] == diceForScore[i + 1]) {
+	    int result = diceForScore[i] + diceForScore[i + 1];
+	    diceForScore.erase(diceForScore.begin() + i, diceForScore.begin() + (i + 1));
+	    return result;
+	}
+    return 0;
 }
 
 int Player::checkSameFaces(int faceValue) {

@@ -32,8 +32,16 @@ public:
 
     void sortHand();
     void calculateScores();
-    bool checkForPair();
+	int checkForPair();
+	int checkForTwoPair();
     int checkSameFaces(int faceValue);
+	int checkForYatzy();
+	int checkForChance();
+	int checkForThreeOfAKind();
+	int checkForFourOfAKind();
+	int checkForSmallStraight();
+	int checkForLargeStraight();
+	int checkForFullHouse();
 };
 
 #endif // PLAYER_H
