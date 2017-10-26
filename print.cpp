@@ -2,28 +2,28 @@
 #include "Score.h"
 
 const string SCORE_NAME[] = {
-	"[1] Ones \t\t",		//0
-	"[2] Twos \t\t",		//1
-	"[3] Threes \t\t",		//2
-	"[4] Fours \t\t",		//3
-	"[5] Fives \t\t",		//4
-	"[6] Sixes \t\t",		//5
-	"[7] Total Score \t",	//6
-	"[8] Bonus \t\t",		//7
-	"[9] Upper Total \t",	//8
+        "[1] Ones \t\t",
+        "[2] Twos \t\t",
+        "[3] Threes \t\t",
+        "[4] Fours \t\t",
+        "[5] Fives \t\t",
+        "[6] Sixes \t\t",
+        "[7] Total Score \t",
+        "[8] Bonus \t\t",
+        "[9] Upper Total \t",
 
-	"[10] One Pair \t\t",	//9
-	"[11] Two Pairs \t\t",	//10
-	"[12] 3 of a kind \t",	//11
-	"[13] 4 of a kind \t",	//12
-	"[14] Small Straight \t",	//13
-	"[15] Large straight \t",	//14
-	"[16] Full House \t",	//15
-	"[17] Chance \t\t",		//16
-	"[18] YATZY \t\t",		//17
-	"[19] Lower Total\t",	//18
+        "[10] One Pair \t\t",
+        "[11] Two Pairs \t\t",
+        "[12] 3 of a kind \t",
+        "[13] 4 of a kind \t",
+        "[14] Small Straight \t",
+        "[15] Large straight \t",
+        "[16] Full House \t",
+        "[17] Chance \t\t",
+        "[18] YATZY \t\t",
+        "[19] Lower Total\t",
 
-	"[20] Grand Total \t",	//19
+        "[20] Grand Total \t",
 };
 
 const string SCORE_INFO[] = {

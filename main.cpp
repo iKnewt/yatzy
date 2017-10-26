@@ -9,7 +9,6 @@ using namespace std;
 int main() {
 	srand(time(0)); // for later generating a random number, should only be done once at the beginning of a program
 
-
 	cout << "Yatzy\n\n"
 			"Welcome to a simple one-player game of yatzy\n"
 			"Your goal is to get the highest possible score by rolling and keeping dice.\n"
