@@ -3,7 +3,7 @@ Another school project
 
 The assignment is as follows:
 
-Make the game of Yatzy (Links to an external site.)Links to an external site. (Yahtzee).
+    Make the game of Yatzy (Yahtzee).
 
     As a start, make it for one person (You can expand it to accept more players if you want).
     You can choose if you make it "forced" or "open" (start with Forced).
