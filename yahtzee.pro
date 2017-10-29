@@ -4,12 +4,13 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += main.cpp \
-    Tool.cpp \
-    Player.cpp \
-    Print.cpp
+    score.cpp \
+    tool.cpp \
+    player.cpp \
+    print.cpp
 
 HEADERS += \
-    Tool.h \
-    Player.h \
-    Print.h \
-    Score.h
+    player.h \
+    print.h \
+    score.h \
+    tool.h

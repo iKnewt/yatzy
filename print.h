@@ -1,7 +1,7 @@
 #ifndef PRINT_H
 #define PRINT_H
 
-#include "Player.h"
+#include "player.h"
 
 class Print
 {

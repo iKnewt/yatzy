@@ -1,5 +1,5 @@
-#include "Print.h"
-#include "Score.h"
+#include "print.h"
+#include "score.h"
 
 const string SCORE_NAME[] = {
         "[1] Ones \t\t",
@@ -68,8 +68,8 @@ void Print::scoreBoard(Player const& player) {
 									"Upper Section\n";
 	for(int i = 0; i < 20; i++) {
 
-	if(player.score[i] >= 0)
-		cout << SCORE_NAME[i] << player.score[i] << endl;
+	if(player.score.value[i] >= 0)
+		cout << SCORE_NAME[i] << player.score.value[i] << endl;
 	else
 		cout << SCORE_NAME[i] << endl;
 	if(i == UpperTotal)
@@ -102,5 +102,5 @@ void Print::playerHand(Player const& player) {
 	cout << " | " << endl << endl;
 	cout << "Name:\t\t" << player.name << endl;
 	cout << "Turns left:\t" << player.turnsLeft << endl;
-	cout << "Score:\t\t" << player.score[GrandTotal] << endl << endl;
+	cout << "Score:\t\t" << player.score.value[GrandTotal] << endl << endl;
 }

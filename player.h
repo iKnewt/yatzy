@@ -2,7 +2,7 @@
 #define PLAYER_H
 
 #include "tool.h"
-#include <vector>
+#include "score.h"
 
 
 class Player
@@ -17,31 +17,15 @@ public:
 
 	string name = "Player";
 	int turnsLeft = 3;
-	int score[20] = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
-
+	Score score;
 	Die dice[5];
-	vector<int> diceForScore = {0,0,0,0,0};
 
 	void selectPlayerName();
-
 	void playerTurn();
 	void rollDice();
 	void saveToScore();
 	void changeHand();
 	void toggleDice();
-
-	void sortHand();
-	void calculateScores();
-	int checkForPair();
-	int checkForTwoPair();
-	int checkSameFaces(int faceValue);
-	int checkForYatzy();
-	int checkForChance();
-	int checkForThreeOfAKind();
-	int checkForFourOfAKind();
-	int checkForSmallStraight();
-	int checkForLargeStraight();
-	int checkForFullHouse();
 };
 
 #endif // PLAYER_H
