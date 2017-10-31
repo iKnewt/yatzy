@@ -1,106 +1,88 @@
 #include "print.h"
 #include "score.h"
+#include <iomanip>
 
-const string SCORE_NAME[] = {
-        "[1] Ones \t\t",
-        "[2] Twos \t\t",
-        "[3] Threes \t\t",
-        "[4] Fours \t\t",
-        "[5] Fives \t\t",
-        "[6] Sixes \t\t",
-        "[7] Total Score \t",
-        "[8] Bonus \t\t",
-        "[9] Upper Total \t",
+void Print::intro() {
+	std::cout << "\n"
+			"****** Welcome to Yatzy ******\n\n"
 
-        "[10] One Pair \t\t",
-        "[11] Two Pairs \t\t",
-        "[12] 3 of a kind \t",
-        "[13] 4 of a kind \t",
-        "[14] Small Straight \t",
-        "[15] Large straight \t",
-        "[16] Full House \t",
-        "[17] Chance \t\t",
-        "[18] YATZY \t\t",
-        "[19] Lower Total\t",
+			"Your goal is to get the highest possible score by rolling and keeping dice.\n"
+			"You can see the explanation for scores and keep track of your scores in the main menu.\n"
+			"The game is played with 5 dice.\n"
+			"Each turn you get three rolls, but the rolls you don't use are saved for later.\n\n"
 
-        "[20] Grand Total \t",
-};
+			"Use your number keys to navigate the menus,\n"
+			"use [0] to return to the previous menu at any time.\n\n"
 
-const string SCORE_INFO[] = {
-	"The sum of all dice showing the number 1",
-	"The sum of all dice showing the number 2",
-	"The sum of all dice showing the number 3",
-	"The sum of all dice showing the number 4",
-	"The sum of all dice showing the number 5",
-	"The sum of all dice showing the number 6",
-	"",
-	"If total score is 63 or over you get 50 bonus points",
-	"",
-
-	"Two dice showing the same number. Score: Sum of those two dice",
-	"Two different pairs of dice. Score: Sum of dice in those two pairs",
-	"Three dice showing the same number. Score: Sum of those three dice",
-	"Four dice with the same number. Score: Sum of those four dice.",
-	"The combination 1-2-3-4-5. Score: 15 points (sum of all the dice)",
-	"The combination 2-3-4-5-6. Score: 20 points (sum of all the dice)",
-	"Any set of three combined with a different pair. Score: Sum of all the dice.",
-	"Any combination of dice. Score: Sum of all the dice.",
-	"All five dice with the same number. Score: 50 points.",
-	"",
-	"",
-};
-
-void Print::scoreBoardInfo() {
-	cout << endl << endl << "Score Board explanation\n\n"
-							"Upper Section\n";
-	for(int i = 0; i < 20; i++) {
-	cout << SCORE_NAME[i] << SCORE_INFO[i] << endl;
-	if(i == UpperTotal)
-		cout << "\nLower Section\n";
-	if(i == LowerTotal)
-		cout << endl;
-	}
-	cout << endl;
+			"Good luck!\n\n\n";
 }
 
-void Print::scoreBoard(Player const& player) {
-	cout << endl << endl << player.name << "'s Score Board\n\n"
-									"Upper Section\n";
-	for(int i = 0; i < 20; i++) {
-
-	if(player.score.value[i] >= 0)
-		cout << SCORE_NAME[i] << player.score.value[i] << endl;
-	else
-		cout << SCORE_NAME[i] << endl;
-	if(i == UpperTotal)
-		cout << "\nLower Section\n";
-	if(i == LowerTotal)
-		cout << endl;
+void Print::scoreBoardInfo() {
+	std::cout << "\n\n"
+				 "Score Board explanation\n\n"
+							"Upper Section\n";
+	for (int i = 0; i < 20; i++) {
+		std::cout << SCORE_NAME[i] << SCORE_INFO[i] << std::endl;
+		if (i == UpperTotal)
+			std::cout << "\nLower Section\n";
+		if (i == LowerTotal)
+			std::cout << std::endl;
 	}
-	cout << endl;
+	std::cout << std::endl;
+}
+
+void Print::scoreBoard(std::vector<Player> players) {
+
+	int numberOfPlayers = players.size();
+	std::cout << std::endl << std::endl << "Score Board\t\t";
+
+	for (int i = 0; i < numberOfPlayers; i++) {
+		std::cout << " | " << players[i].name[0] << players[i].name[1] << players[i].name[2];
+	}
+	std::cout << " |" << std::endl << std::endl;
+
+	std::cout << "Upper Section\n";
+
+	for (int i = 0; i < 20; i++) {
+		std::cout << SCORE_NAME[i];
+		for (int j = 0; j < numberOfPlayers; j++) {
+			if (players[j].score.value[i] >= 0)
+				std::cout << " | " << std::setw(3) << players[j].score.value[i] << std::setw(0);
+			else
+				std::cout << " |    ";
+		}
+		std::cout << " |" << std::endl;
+
+		if (i == UpperTotal)
+			std::cout << "\nLower Section\n";
+		if (i == LowerTotal)
+			std::cout << std::endl;
+	}
+	std::cout << "\n---------------------------------------------------------\n";
 }
 
 void Print::diceOnTable(Player const& player) {
-	cout << "Dice number \t | 1 | 2 | 3 | 4 | 5 |\n"
+	std::cout << "Dice number \t | 1 | 2 | 3 | 4 | 5 |\n"
 			"            \t ---------------------\n"
 			"Dice on table \t";
-	for(int i = 0; i < 5; i++)
-		if(player.dice[i].keep == false && player.dice[i].value != 0)
-			cout << " | " << player.dice[i].value;
-	else
-			cout << " |  ";
-	cout << " | " << endl;
+	for (int i = 0; i < 5; i++) {
+		if (player.dice[i].keep == false && player.dice[i].value != 0)
+			std::cout << " | " << player.dice[i].value;
+		else
+			std::cout << " |  ";
+	}
+	std::cout << " | " << std::endl;
 }
 
 void Print::playerHand(Player const& player) {
-	cout << "Player's dice \t";
-	for(int i = 0; i < 5; i++)
-		if(player.dice[i].keep == true && player.dice[i].value != 0)
-			cout << " | " << player.dice[i].value;
-	else
-			cout << " |  ";
-	cout << " | " << endl << endl;
-	cout << "Name:\t\t" << player.name << endl;
-	cout << "Turns left:\t" << player.turnsLeft << endl;
-	cout << "Score:\t\t" << player.score.value[GrandTotal] << endl << endl;
+	std::cout << "Dice to keep\t";
+	for (int i = 0; i < 5; i++)
+		if (player.dice[i].keep == true && player.dice[i].value != 0)
+			std::cout << " | " << player.dice[i].value;
+		else
+			std::cout << " |  ";
+	std::cout << " | " << std::endl << std::endl;
+	std::cout << "Player:\t\t" << player.name << std::endl;
+	std::cout << "Turns left:\t" << player.rollsLeft << std::endl;
+	std::cout << "Score:\t\t" << player.score.value[GrandTotal] << std::endl << std::endl;
 }

@@ -7,10 +7,12 @@ SOURCES += main.cpp \
     score.cpp \
     tool.cpp \
     player.cpp \
-    print.cpp
+    print.cpp \
+    game.cpp
 
 HEADERS += \
     player.h \
     print.h \
     score.h \
-    tool.h
+    tool.h \
+    game.h

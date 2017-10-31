@@ -4,17 +4,15 @@
 #include <algorithm>
 #include <iostream>
 
-using namespace std;
-
-class Tool
-{
+class Tool {
 public:
-    static string readLine();
-    static string toLower(string line);
-    static bool tryParseInt(string input, int* out);
+	static std::string readLine();
+	static std::string toLower(std::string line);
+	static bool tryParseInt(std::string input, int* out);
     static bool tryReadInt(int* out);
     static int randomNumber(int min, int max);
     static void pressToContinue();
+	static void errorMessageInvalidInput();
 };
 
 #endif // TOOL_H
