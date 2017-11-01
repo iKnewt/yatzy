@@ -9,7 +9,7 @@
 
 int main() {
 	// for later generating a random number, should only be done once at the beginning of a program
-	srand(time(0));
+	srand((unsigned)time(0));
 	do {
 		Print::intro();
 		Game game;

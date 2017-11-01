@@ -10,7 +10,7 @@ void Print::intro() {
 				 "Your goal is to get the highest possible score by rolling and keeping dice.\n"
 				 "You can see the explanation for scores and keep track of your scores in the main menu.\n"
 				 "The game is played with 5 dice.\n"
-				 "Each turn you get three rolls, but the rolls you don't use are saved for later.\n\n"
+				 "Each turn you get a maximum of three rolls.\n\n"
 
 				 "Use your number keys to navigate the menus,\n"
 				 "Tip: use [0] to return to the previous menu at any time.\n\n"
