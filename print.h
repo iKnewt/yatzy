@@ -35,9 +35,9 @@ const std::string SCORE_INFO[] = {
 	"The sum of all dice showing the number 4",
 	"The sum of all dice showing the number 5",
 	"The sum of all dice showing the number 6",
-	"",
-	"If total score is 63 or over you get 50 bonus points",
-	"",
+	"The sum of all above scores",
+	"If total score is 63 or more you get 50 bonus points",
+	"The sum of all scores in Upper Section",
 
 	"Two dice showing the same number. Score: Sum of those two dice",
 	"Two different pairs of dice. Score: Sum of dice in those two pairs",
@@ -48,8 +48,8 @@ const std::string SCORE_INFO[] = {
 	"Any set of three combined with a different pair. Score: Sum of all the dice.",
 	"Any combination of dice. Score: Sum of all the dice.",
 	"All five dice with the same number. Score: 50 points.",
-	"",
-	"",
+	"The suum of all Scores in Lower Section",
+	"The sum of all scores",
 };
 
 class Print {

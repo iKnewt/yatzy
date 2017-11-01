@@ -40,18 +40,19 @@ int Score::chance() {
 	return result;
 }
 
-// breaks if you have 2x2 alike and look for 3 alike, fix this later
 int Score::ofAKind(int xOfaKind) {
-	int scoreCheck = 0;
+	int faceCheck = 0;
 	int sameFaces = 1;
-	for (int score : diceForScore) {
-		if (score == scoreCheck)
+	for (int face : diceForScore) {
+		if (face == faceCheck)
 			sameFaces++;
-		scoreCheck = score;
+		else
+			sameFaces = 1;
+		faceCheck = face;
 		if (sameFaces == 5)
 			return 50;
 		else if (sameFaces == xOfaKind)
-			return score * xOfaKind;
+			return face * xOfaKind;
 	}
 	return 0;
 }
@@ -62,20 +63,19 @@ int Score::differentPair(int valueToAvoid) {
 	for (int score : diceForScore) {
 		if (score == scoreCheck)
 			sameFaces++;
+		else
+			sameFaces = 1;
 		scoreCheck = score;
 		if (sameFaces == 2 && score != valueToAvoid)
 			return score * 2;
-		else
-			sameFaces = 1;
 	}
 	return 0;
 }
 
-int Score::straight() {
+int Score::straight(int firstDiceValue) {
 	if (diceForScore.size() != 5)
 		return 0;
 
-	int firstDiceValue = diceForScore[0];
 	for (int i = 0; i < 5; i++)
 		if (diceForScore[i] != i + firstDiceValue)
 			return 0;

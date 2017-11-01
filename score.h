@@ -43,7 +43,7 @@ public:
 	int differentPair(int valueToAvoid);
 	int yatzy();
 	int chance();
-	int straight();
+	int straight(int firstDiceValue);
 	int fullHouse();
 };
 

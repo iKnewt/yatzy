@@ -13,6 +13,7 @@ public:
     static int randomNumber(int min, int max);
     static void pressToContinue();
 	static void errorMessageInvalidInput();
+	static void printSeparator();
 };
 
 #endif // TOOL_H

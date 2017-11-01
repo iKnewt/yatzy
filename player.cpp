@@ -2,8 +2,12 @@
 #include "score.h"
 #include "print.h"
 #include <algorithm>
+#include <string>
 
+//
 bool Player::playerTurn(Game& game){
+
+	Tool::printSeparator();
 
 	score.calculateScores();
 	Print::diceOnTable(*this);
@@ -13,10 +17,17 @@ bool Player::playerTurn(Game& game){
 				 "[2] Roll\n"
 				 "[3] Save hand to Score\n"
 				 "[4] Print Scoreboard\n"
-				 "[5] Print explanation for scoreboard\n"
-				 "[6] Exit game early\n";
+				 "[5] More menu options\n";
+	if (printLongMenu) {
+		std::cout << "[6] Print explanation for scoreboard\n"
+					 "[7] Change player name\n"
+					 "[8] Change game mode\n"
+					 "[9] Remove current player from game\n"
+					 "[10] Exit game early\n";
+		printLongMenu = false;
+	}
 	int playerChoice;
-	while (!Tool::tryReadInt(&playerChoice) || playerChoice < 1 || playerChoice > 6)
+	while (!Tool::tryReadInt(&playerChoice) || playerChoice < 1 || playerChoice > 10)
 		Tool::errorMessageInvalidInput();
 
 	switch (playerChoice) {
@@ -42,9 +53,21 @@ bool Player::playerTurn(Game& game){
 			Print::scoreBoard(game.players);
 			break;
 		case 5:
-			Print::scoreBoardInfo();
+			printLongMenu = true;
 			break;
 		case 6:
+			Print::scoreBoardInfo();
+			break;
+		case 7:
+			selectPlayerName();
+			break;
+		case 8:
+			game.selectGameMode();
+			break;
+		case 9:
+			game.removePlayerFromGame(*this);
+			break;
+		case 10:
 			game.round = 16;
 			return false;
 			break;
@@ -57,7 +80,7 @@ bool Player::playerTurn(Game& game){
 bool Player::confirmChoice(int turnScore, int userChoice) {
 	int start = SCORE_NAME[userChoice].find(' ') + 1;
 	int end = SCORE_NAME[userChoice].find('\t') - 3;
-	std::cout << SCORE_NAME[userChoice].substr(start,end) << "score: " << turnScore
+	std::cout << "\n" << SCORE_NAME[userChoice].substr(start,end) << "score: " << turnScore
 			  << "\n\nConfirm score \n"
 				 "[1] Yes\n"
 				 "[2] No\n";
@@ -92,57 +115,11 @@ bool Player::saveToScore(Game& game) {
 			scoreSelected = game.round + 3;
 	}
 
-	bool exit;
+	bool exit = false;
 
 	if (score.value[scoreSelected - 1] != -1)
 		std::cout << "You've already filled that score.\n\n";
 	else {
-//		switch(scoreSelected - 1) {
-//			case Ones:
-//			case Twos:
-//			case Threes:
-//			case Fours:
-//			case Fives:
-//			case Sixes:
-//				exit = confirmChoice(score.ofAKind(scoreSelected), scoreSelected - 1);
-//				break;
-//			case OnePair:
-//				exit = confirmChoice(score.pair(), scoreSelected - 1);
-//				break;
-//			case TwoPairs:
-//				exit = confirmChoice(score.twoPair(), scoreSelected - 1);
-//				break;
-//			case ThreeOfAKind:
-//				exit = confirmChoice(score.threeOfAKind(), scoreSelected - 1);
-//				break;
-//			case FourOfAKind:
-//				exit = confirmChoice(score.fourOfAKind(), scoreSelected - 1);
-//				break;
-//			case SmallStraight:
-//			case LargeStraight:
-//				exit = confirmChoice(score.straight(), scoreSelected - 1);
-//				break;
-//			case FullHouse:
-//				exit = confirmChoice(score.fullHouse(), scoreSelected - 1);
-//				break;
-//			case Chance:
-//				exit = confirmChoice(score.chance(), scoreSelected - 1);
-//				break;
-//			case Yatzy:
-//				exit = confirmChoice(score.yatzy(), scoreSelected - 1);
-//				break;
-//			case TotalScore:
-//			case Bonus:
-//			case UpperTotal:
-//			case LowerTotal:
-//			case GrandTotal:
-//				std::cout << "You can't change this value\n";
-//				break;
-//			default:
-
-//				break;
-//		}
-
 		switch(scoreSelected - 1) {
 			case Ones:
 			case Twos:
@@ -165,8 +142,10 @@ bool Player::saveToScore(Game& game) {
 				exit = confirmChoice(score.ofAKind(4), scoreSelected - 1);
 				break;
 			case SmallStraight:
+				exit = confirmChoice(score.straight(1), scoreSelected - 1);
+				break;
 			case LargeStraight:
-				exit = confirmChoice(score.straight(), scoreSelected - 1);
+				exit = confirmChoice(score.straight(2), scoreSelected - 1);
 				break;
 			case FullHouse:
 				exit = confirmChoice(score.fullHouse(), scoreSelected - 1);
@@ -189,14 +168,12 @@ bool Player::saveToScore(Game& game) {
 				break;
 		}
 
-
-
 		if (exit) {
 			for (int i = 0; i < 5; i++) {
 				dice[i].keep = false;
 				dice[i].value = 0;
 			}
-			rollsLeft += 3;
+			rollsLeft = 3;
 			return true;
 		}
 	}
@@ -204,30 +181,39 @@ bool Player::saveToScore(Game& game) {
 }
 
 void Player::toggleDice() {
-	std::cout << "[1-5] toggle die\n"
+	std::cout << "\n[1-5] toggle die\n"
 				 "[6] keep all dice\n";
-	int playerChoice;
-	while (!Tool::tryReadInt(&playerChoice) || playerChoice < 0 || playerChoice > 6)
+	int userInput;
+	while (!Tool::tryReadInt(&userInput) || userInput < 0 || userInput > 6)
 		Tool::errorMessageInvalidInput();
 
-	if (playerChoice == 0)
-		return;
-
-	if (playerChoice == 6 && dice[0].value != 0) {
-		for (int i = 0; i < 5; i++)
-			dice[i].keep = true;
-		return;
+	switch (userInput) {
+		case 1:
+		case 2:
+		case 3:
+		case 4:
+		case 5:
+			if (dice[userInput - 1].keep == false && dice[userInput - 1].value != 0)
+				dice[userInput - 1].keep = true;
+			else
+				dice[userInput - 1].keep = false;
+			break;
+		case 6:
+			if (dice[0].value != 0) {
+				for (int i = 0; i < 5; i++)
+					dice[i].keep = true;
+				return;
+			}
+			break;
+		default:
+			return;
+			break;
 	}
-
-	if (dice[playerChoice - 1].keep == false && dice[playerChoice - 1].value != 0)
-		dice[playerChoice - 1].keep = true;
-	else
-		dice[playerChoice - 1].keep = false;
 }
 
 void Player::rollDice() {
 	rollsLeft -= 1;
-	std::cout << "Rolling dice..\n\n";
+	std::cout << "Rolling dice..\n";
 	for (int i = 0; i < 5; i++)
 		if (dice[i].keep == false)
 			dice[i].value = rand() % 6 + 1;

@@ -5,9 +5,11 @@
 #include "tool.h"
 #include "game.h"
 #include "print.h"
+#include <string>
 
 int main() {
-	srand(time(0)); // for later generating a random number, should only be done once at the beginning of a program
+	// for later generating a random number, should only be done once at the beginning of a program
+	srand(time(0));
 
 	Print::intro();
 	Game game;
@@ -15,6 +17,10 @@ int main() {
 	game.createPlayers();
 	game.loop();
 
-	std::cout << "\n\ncongratulations, " << game.players[game.checkWinner()].name << " wins!\n\n"; // will replace with something better
+	// should replace with something better
+	Tool::printSeparator();
+	std::cout << "Congratulations, " << game.players[game.checkWinner()].name << " wins!\n\n";
+	std::cout << "\nThat's it folks, nothing more to see here...\n";
+	Tool::printSeparator();
 	return 0;
 }

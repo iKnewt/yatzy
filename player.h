@@ -19,6 +19,7 @@ public:
     Score score;
     std::string name = "Player";
     Die dice[5];
+    bool printLongMenu = false;
 
     bool playerTurn(Game& game);
     void selectPlayerName();
