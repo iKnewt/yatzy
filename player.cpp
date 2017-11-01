@@ -11,8 +11,8 @@ bool Player::playerTurn(Game& game){
 	Print::diceOnTable(*this);
 	Print::playerHand(*this);
 
-	std::cout << "[1] Toggle dice\n"
-				 "[2] Roll\n"
+	std::cout << "[1] Roll\n"
+				 "[2] Toggle dice\n"
 				 "[3] Save hand to Score\n"
 				 "[4] Print Scoreboard\n"
 				 "[5] More menu options\n";
@@ -30,13 +30,13 @@ bool Player::playerTurn(Game& game){
 
 	switch (playerChoice) {
 		case 1:
-			toggleDice();
-			break;
-		case 2:
 			if (rollsLeft == 0)
 				std::cout << "You have no turns left, you're going to have to save hand to score.\n";
 			else
 				rollDice();
+			break;
+		case 2:
+			toggleDice();
 			break;
 		case 3:
 			if (saveToScore(game)) {
@@ -82,8 +82,8 @@ bool Player::confirmChoice(int turnScore, int userChoice) {
 	// this was implemented later so it uses the same string array as the printing of the scoreboard does
 	// but it only prints the part of the strings that are relevant to this case
 	// which would be from the first space to the first tab
-	int start = SCORE_NAME[userChoice].find(' ') + 1;
-	int end = SCORE_NAME[userChoice].find('\t') - 3;
+	size_t start = SCORE_NAME[userChoice].find(' ') + 1;
+	size_t end = SCORE_NAME[userChoice].find('\t') - 3;
 	std::cout << "\n" << SCORE_NAME[userChoice].substr(start,end) << "score: " << turnScore
 			  << "\n\nConfirm score \n"
 				 "[1] Yes\n"
@@ -189,34 +189,42 @@ bool Player::saveToScore(Game& game) {
 // used to let the player toggle selected dice between keeping or rolling again
 // 0 is used to indicate a die before being rolled the first time (to avoid printing them to screen)
 void Player::toggleDice() {
-	std::cout << "\n[1-5] toggle die\n"
-				 "[6] keep all dice\n";
 	int userInput;
-	while (!Tool::tryReadInt(&userInput) || userInput < 0 || userInput > 6)
-		Tool::errorMessageInvalidInput();
+	do {
+		Tool::printSeparator();
+		Print::diceOnTable(*this);
+		Print::playerHand(*this);
 
-	switch (userInput) {
-		case 1:
-		case 2:
-		case 3:
-		case 4:
-		case 5:
-			if (dice[userInput - 1].keep == false && dice[userInput - 1].value != 0)
-				dice[userInput - 1].keep = true;
-			else
-				dice[userInput - 1].keep = false;
-			break;
-		case 6:
-			if (dice[0].value != 0) {
-				for (int i = 0; i < 5; i++)
-					dice[i].keep = true;
+		std::cout << "[0] Exit toggle\n"
+					 "[1-5] Toggle die\n"
+					 "[6] Keep all dice\n";
+		while (!Tool::tryReadInt(&userInput) || userInput < 0 || userInput > 6)
+			Tool::errorMessageInvalidInput();
+
+		switch (userInput) {
+			case 1:
+			case 2:
+			case 3:
+			case 4:
+			case 5:
+				if (dice[userInput - 1].keep == false && dice[userInput - 1].value != 0)
+					dice[userInput - 1].keep = true;
+				else
+					dice[userInput - 1].keep = false;
+				break;
+			case 6:
+				if (dice[0].value != 0) {
+					for (int i = 0; i < 5; i++)
+						dice[i].keep = true;
+					return;
+				}
+				break;
+			default:
 				return;
-			}
-			break;
-		default:
-			return;
-			break;
-	}
+				break;
+		}
+	} while (userInput != 0 && userInput != 6);
+
 }
 
 // gives a random value 1-6 to any dice who are not meant to be kept

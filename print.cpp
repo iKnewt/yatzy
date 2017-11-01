@@ -12,8 +12,9 @@ void Print::intro() {
 				 "The game is played with 5 dice.\n"
 				 "Each turn you get a maximum of three rolls.\n\n"
 
-				 "Use your number keys to navigate the menus,\n"
-				 "Tip: use [0] to return to the previous menu at any time.\n\n"
+				 "Use your number keys to navigate the menus\n"
+				 "Use the \"Toggle Dice\" option to decide if you want to keep a die or roll it again\n\n"
+				 "TIP: use [0] to return to the previous menu at any time.\n\n"
 
 				 "Good luck!\n";
 	Tool::printSeparator();
