@@ -38,9 +38,8 @@ public:
 	void sortHand(Player* player);
 	void calculateScores();
 	int twoPair();
-	int ofAKind(int howManyOfaKind);
+	int ofAKind(int howManyOfaKind, int valueToAvoid);
 	int sameFaces(int faceValue);
-	int differentPair(int valueToAvoid);
 	int yatzy();
 	int chance();
 	int straight(int firstDiceValue);

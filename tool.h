@@ -7,11 +7,8 @@
 class Tool {
 public:
 	static std::string readLine();
-	static std::string toLower(std::string line);
 	static bool tryParseInt(std::string input, int* out);
-    static bool tryReadInt(int* out);
-    static int randomNumber(int min, int max);
-    static void pressToContinue();
+	static bool tryReadInt(int* out);
 	static void errorMessageInvalidInput();
 	static void printSeparator();
 };

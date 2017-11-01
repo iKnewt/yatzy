@@ -19,7 +19,8 @@ public:
 	void createPlayers();
 	void selectGameMode();
 	int checkWinner();
-	void removePlayerFromGame(Player player);
+	void removePlayerFromGame(Player* player);
+	void reArrangePlayers();
 };
 
 #endif // GAME_H

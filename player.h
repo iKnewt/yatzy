@@ -20,6 +20,7 @@ public:
     std::string name = "Player";
     Die dice[5];
     bool printLongMenu = false;
+    bool activePlayer = true;
 
     bool playerTurn(Game& game);
     void selectPlayerName();

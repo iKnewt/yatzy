@@ -4,12 +4,10 @@
 #include <algorithm>
 #include <string>
 
-//
+// returns a bool based on if the player turn should loop again or not
 bool Player::playerTurn(Game& game){
 
 	Tool::printSeparator();
-
-	score.calculateScores();
 	Print::diceOnTable(*this);
 	Print::playerHand(*this);
 
@@ -35,10 +33,8 @@ bool Player::playerTurn(Game& game){
 			toggleDice();
 			break;
 		case 2:
-			if (rollsLeft == 0) {
+			if (rollsLeft == 0)
 				std::cout << "You have no turns left, you're going to have to save hand to score.\n";
-				Tool::pressToContinue();
-			}
 			else
 				rollDice();
 			break;
@@ -50,6 +46,7 @@ bool Player::playerTurn(Game& game){
 				break;
 			}
 		case 4:
+			score.calculateScores();
 			Print::scoreBoard(game.players);
 			break;
 		case 5:
@@ -65,9 +62,11 @@ bool Player::playerTurn(Game& game){
 			game.selectGameMode();
 			break;
 		case 9:
-			game.removePlayerFromGame(*this);
+			game.removePlayerFromGame(this);
+			return false;
 			break;
 		case 10:
+			// sets the gameround to 16 because the game only has 15 rouns and exits after that
 			game.round = 16;
 			return false;
 			break;
@@ -77,7 +76,12 @@ bool Player::playerTurn(Game& game){
 	return true;
 }
 
+// makes the player confirm their save option just in case
+// returns a bool to indicate if they want the score or not after seeing it
 bool Player::confirmChoice(int turnScore, int userChoice) {
+	// this was implemented later so it uses the same string array as the printing of the scoreboard does
+	// but it only prints the part of the strings that are relevant to this case
+	// which would be from the first space to the first tab
 	int start = SCORE_NAME[userChoice].find(' ') + 1;
 	int end = SCORE_NAME[userChoice].find('\t') - 3;
 	std::cout << "\n" << SCORE_NAME[userChoice].substr(start,end) << "score: " << turnScore
@@ -98,6 +102,8 @@ bool Player::confirmChoice(int turnScore, int userChoice) {
 	return false;
 }
 
+// either lets the player chose where to save their current hand
+// or it does line by line depending on the selected game mode, free or forced
 bool Player::saveToScore(Game& game) {
 	score.sortHand(this);
 	int scoreSelected = 0;
@@ -114,9 +120,10 @@ bool Player::saveToScore(Game& game) {
 		else
 			scoreSelected = game.round + 3;
 	}
-
+	// used in case the player regrets their choice of where to save their score
 	bool exit = false;
 
+	// -1 is used to indicate an inactive/unused score
 	if (score.value[scoreSelected - 1] != -1)
 		std::cout << "You've already filled that score.\n\n";
 	else {
@@ -130,16 +137,16 @@ bool Player::saveToScore(Game& game) {
 				exit = confirmChoice(score.sameFaces(scoreSelected), scoreSelected - 1);
 				break;
 			case OnePair:
-				exit = confirmChoice(score.ofAKind(2), scoreSelected - 1);
+				exit = confirmChoice(score.ofAKind(2,0), scoreSelected - 1);
 				break;
 			case TwoPairs:
 				exit = confirmChoice(score.twoPair(), scoreSelected - 1);
 				break;
 			case ThreeOfAKind:
-				exit = confirmChoice(score.ofAKind(3), scoreSelected - 1);
+				exit = confirmChoice(score.ofAKind(3,0), scoreSelected - 1);
 				break;
 			case FourOfAKind:
-				exit = confirmChoice(score.ofAKind(4), scoreSelected - 1);
+				exit = confirmChoice(score.ofAKind(4,0), scoreSelected - 1);
 				break;
 			case SmallStraight:
 				exit = confirmChoice(score.straight(1), scoreSelected - 1);
@@ -154,7 +161,7 @@ bool Player::saveToScore(Game& game) {
 				exit = confirmChoice(score.chance(), scoreSelected - 1);
 				break;
 			case Yatzy:
-				exit = confirmChoice(score.ofAKind(5), scoreSelected - 1);
+				exit = confirmChoice(score.ofAKind(5,0), scoreSelected - 1);
 				break;
 			case TotalScore:
 			case Bonus:
@@ -164,10 +171,9 @@ bool Player::saveToScore(Game& game) {
 				std::cout << "You can't change this value\n";
 				break;
 			default:
-
 				break;
 		}
-
+		// resets the unused dice and the amount of rolls after a finished turn
 		if (exit) {
 			for (int i = 0; i < 5; i++) {
 				dice[i].keep = false;
@@ -180,6 +186,8 @@ bool Player::saveToScore(Game& game) {
 	return false;
 }
 
+// used to let the player toggle selected dice between keeping or rolling again
+// 0 is used to indicate a die before being rolled the first time (to avoid printing them to screen)
 void Player::toggleDice() {
 	std::cout << "\n[1-5] toggle die\n"
 				 "[6] keep all dice\n";
@@ -211,6 +219,7 @@ void Player::toggleDice() {
 	}
 }
 
+// gives a random value 1-6 to any dice who are not meant to be kept
 void Player::rollDice() {
 	rollsLeft -= 1;
 	std::cout << "Rolling dice..\n";
@@ -219,6 +228,8 @@ void Player::rollDice() {
 			dice[i].value = rand() % 6 + 1;
 }
 
+// lets the player select a name
+// the name is used to keep track of score and who's turn it is
 void Player::selectPlayerName() {
 	do {
 		std::cout << "Player " << playerNumber + 1 << " name: ";

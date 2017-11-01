@@ -1,10 +1,6 @@
 #include "tool.h"
 #include <string>
 
-std::string Tool::toLower(std::string line) {
-	transform(line.begin(), line.end(), line.begin(),(int (*)(int))tolower);
-	return line;
-}
 
 bool Tool::tryParseInt(std::string input, int* out) {
 	try {
@@ -24,11 +20,6 @@ std::string Tool::readLine() {
 	std::string line = "";
 	getline(std::cin, line);
 	return line;
-}
-
-void Tool::pressToContinue() {
-	std::cout << "\nPress enter to continue\n";
-	Tool::readLine();
 }
 
 void Tool::errorMessageInvalidInput() {
